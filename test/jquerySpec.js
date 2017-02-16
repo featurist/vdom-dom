@@ -8,10 +8,10 @@ const h = require('virtual-dom/h')
 const assert = require('assert')
 
 const vdomDom = require('..')
-const VWindow = require('../vwindow')
-const VDocument = require('../vdocument')
-const VElement = require('../velement')
-const VLocation = require('../vlocation')
+const WWindow = require('../wwindow')
+const WDocument = require('../wdocument')
+const WElement = require('../welement')
+const WLocation = require('../wlocation')
 
 const globalIt = global.it
 const it = function (description, callback) {
@@ -25,9 +25,9 @@ const it = function (description, callback) {
 
   globalIt(description + ' (VDOM)', function () {
     const html = h('html', {}, [h('body')])
-    const document = new VDocument(new VElement(html))
-    const location = new VLocation('http://example.com')
-    const window = new VWindow(document, location)
+    const document = new WDocument(new WElement(html))
+    const location = new WLocation('http://example.com')
+    const window = new WWindow(document, location)
     callback(jquery(window))
   })
 }

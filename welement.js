@@ -1,22 +1,21 @@
-var VText = require('./vtext')
+var WText = require('./wtext')
+var VNode = require('virtual-dom/vnode/vnode')
+var VText = require('virtual-dom/vnode/vtext')
 var vdomToHtml = require('vdom-to-html')
-var htmlToVdom = require('html-to-vdom')({
-  VNode: require('virtual-dom/vnode/vnode'),
-  VText: require('virtual-dom/vnode/vtext')
-});
+var htmlToVdom = require('html-to-vdom')({ VNode: VNode, VText: VText });
 
-function VElement(node) {
-  this.tagName = node.tagName
-  this.node = node
+function WElement(vnode) {
+  this.tagName = vnode.tagName
+  this.vnode = vnode
 
-  overwriteChildNodes(this, node.children)
+  overwriteChildNodes(this, vnode.children)
 
   Object.defineProperty(this, 'innerHTML', {
     set: function(html) {
       overwriteChildNodes(this, [].concat(htmlToVdom(html)))
     }.bind(this),
     get: function() {
-      return this.node.children.map(function (child) {
+      return this.vnode.children.map(function (child) {
         return vdomToHtml(child) }).join('')
       }.bind(this)
   });
@@ -29,15 +28,15 @@ function VElement(node) {
 }
 
 function overwriteChildNodes(element, children) {
-  element.node.children = children
+  element.vnode.children = children
   element.childNodes = children.map(function(child) {
-    return child.type === 'VirtualText' ? new VText(child) : new VElement(child)
+    return child.type === 'VirtualText' ? new WText(child) : new WElement(child)
   })
 }
 
-VElement.prototype.nodeType = 1
+WElement.prototype.nodeType = 1
 
-VElement.prototype.getElementsByTagName = function(tagName) {
+WElement.prototype.getElementsByTagName = function(tagName) {
   var elements = []
   var queue = [].concat(this.childNodes)
   while (queue.length > 0) {
@@ -51,17 +50,17 @@ VElement.prototype.getElementsByTagName = function(tagName) {
   return elements
 }
 
-VElement.prototype.setAttribute = function(name, value) {
+WElement.prototype.setAttribute = function(name, value) {
 }
 
-VElement.prototype.appendChild = function(child) {
-  this.node.children.push(child.node)
+WElement.prototype.appendChild = function(child) {
+  this.vnode.children.push(child.vnode)
   this.childNodes.push(child)
   return child
 }
 
-VElement.prototype.cloneNode = function(deep) {
-  return new VElement(this.node)
+WElement.prototype.cloneNode = function(deep) {
+  return new WElement(this.vnode)
 }
 
-module.exports = VElement
+module.exports = WElement

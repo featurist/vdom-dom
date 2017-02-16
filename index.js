@@ -1,8 +1,8 @@
-var VElement = require('./velement')
-var VText = require('./vtext')
+var WElement = require('./welement')
+var WText = require('./wtext')
 
 function vdomDom(vnode) {
-  return vnode.type === 'VirtualText' ? new VText(vnode) : new VElement(vnode)
+  return vnode.type === 'VirtualText' ? new WText(vnode) : new WElement(vnode)
 }
 
 module.exports = vdomDom
