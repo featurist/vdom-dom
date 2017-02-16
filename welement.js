@@ -10,21 +10,41 @@ function WElement(vnode) {
 
   overwriteChildNodes(this, vnode.children)
 
+  Object.defineProperty(this, 'id', {
+    set: function(value) {
+      this.setAttribute('id', value)
+    }.bind(this),
+    get: function() {
+      return this.getAttribute('id')
+    }
+  })
+
+  Object.defineProperty(this, 'className', {
+    set: function(value) {
+      this.vnode.properties.className = value
+    }.bind(this),
+    get: function() {
+      return this.vnode.properties.className
+    }
+  })
+
   Object.defineProperty(this, 'innerHTML', {
     set: function(html) {
-      overwriteChildNodes(this, [].concat(htmlToVdom(html)))
+      var vdom = htmlToVdom(html)
+      // TODO: normalize
+      overwriteChildNodes(this, [].concat(vdom))
     }.bind(this),
     get: function() {
       return this.vnode.children.map(function (child) {
         return vdomToHtml(child) }).join('')
       }.bind(this)
-  });
+  })
 
   Object.defineProperty(this, 'lastChild', {
     get: function() {
       return this.childNodes[this.childNodes.length - 1]
     }.bind(this)
-  });
+  })
 }
 
 function overwriteChildNodes(element, children) {
@@ -50,7 +70,26 @@ WElement.prototype.getElementsByTagName = function(tagName) {
   return elements
 }
 
+WElement.prototype.getAttribute = function(name) {
+  if (name == 'id') {
+    return this.vnode.properties.id
+  } else if (name == 'class') {
+    return this.vnode.properties.className ||
+           this.vnode.properties.attributes['class'] // html-to-vdom does this
+  } else {
+    return this.vnode.properties.attributes[name]
+  }
+}
+
 WElement.prototype.setAttribute = function(name, value) {
+  if (name == 'id') {
+    this.vnode.properties.id = value
+  } else if (name == 'class') {
+    this.vnode.properties.className = value
+  } else {
+    this.vnode.properties.attributes = this.vnode.properties.attributes || {}
+    this.vnode.properties.attributes[name] = value
+  }
 }
 
 WElement.prototype.appendChild = function(child) {

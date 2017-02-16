@@ -5995,7 +5995,6 @@ jQuery.fn.extend( {
 	},
 
 	html: function( value ) {
-		debugger
 		return access( this, function( value ) {
 			var elem = this[ 0 ] || {},
 				i = 0,
