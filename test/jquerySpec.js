@@ -159,9 +159,37 @@ describe('jQuery', function() {
   })
 
   describe('.hasClass(className)', function () {
+    it('is false when no elements have the class', function ($) {
+      $('body').html('<a>Hi</a><a>Bye</a>')
+      assert.equal($('a').hasClass('z'), false)
+    })
+
+    it('is true when some elements have the class', function ($) {
+      $('body').html('<a class="x y z">Hi</a><a>Bye</a>')
+      assert.equal($('a').hasClass('z'), true)
+    })
+
     it('is true when all elements have the class', function ($) {
       $('body').html('<a class="x y z">Hi</a><b class="z">Bye</b>')
       assert.equal($('a, b').hasClass('z'), true)
+    })
+  })
+
+  describe('.removeClass(className)', function () {
+    it('removes multiple classes to leave empty class attribute', function ($) {
+      $('body').html('<p><a class="x y z">Hi</a><a class="x y z">Bye</a></p>')
+      $('a').removeClass('z y x')
+      assert.equal($('p').html(), '<a class="">Hi</a><a class="">Bye</a>')
+    })
+  })
+
+  describe('.toggleClass(className)', function () {
+    it('adds classes then removes them', function ($) {
+      $('body').html('<p><a>Hi</a><b>Bye</b></p>')
+      $('a, b').toggleClass('x y')
+      assert.equal($('p').html(), '<a class="x y">Hi</a><b class="x y">Bye</b>')
+      $('a, b').toggleClass('x y')
+      assert.equal($('p').html(), '<a class="">Hi</a><b class="">Bye</b>')
     })
   })
 })
