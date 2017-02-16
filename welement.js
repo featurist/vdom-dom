@@ -1,8 +1,5 @@
 var WText = require('./wtext')
-var VNode = require('virtual-dom/vnode/vnode')
-var VText = require('virtual-dom/vnode/vtext')
-var vdomToHtml = require('vdom-to-html')
-var htmlToVdom = require('html-to-vdom')({ VNode: VNode, VText: VText });
+var convert = require('./convert')
 
 function WElement(vnode) {
   this.tagName = vnode.tagName
@@ -30,13 +27,11 @@ function WElement(vnode) {
 
   Object.defineProperty(this, 'innerHTML', {
     set: function(html) {
-      var vdom = htmlToVdom(html)
-      // TODO: normalize
-      overwriteChildNodes(this, [].concat(vdom))
+      overwriteChildNodes(this, [].concat(convert.htmlToVdom(html)))
     }.bind(this),
     get: function() {
       return this.vnode.children.map(function (child) {
-        return vdomToHtml(child) }).join('')
+        return convert.vdomToHtml(child) }).join('')
       }.bind(this)
   })
 
