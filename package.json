@@ -4,13 +4,19 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "mocha"
+    "test": "./mocha && ./electron"
   },
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "electron": "^1.4.15",
+    "electron-mocha": "^3.3.0",
+    "html-to-vdom": "^0.7.0",
     "jquery": "^3.1.1",
     "mocha": "^3.2.0",
     "virtual-dom": "^2.1.1"
+  },
+  "dependencies": {
+    "vdom-to-html": "^2.3.1"
   }
 }
