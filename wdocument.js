@@ -16,7 +16,7 @@ WDocument.prototype.nodeType = 9
 
 WDocument.prototype.getElementsByTagName = function(tagName) {
   var elements = []
-  if (this.documentElement.tagName.toLowerCase() == tagName.toLowerCase()) {
+  if (tagName == '*' || this.documentElement.tagName.toLowerCase() == tagName.toLowerCase()) {
     elements.push(this.documentElement)
   }
   elements = elements.concat(this.documentElement.getElementsByTagName(tagName))

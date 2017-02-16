@@ -890,6 +890,7 @@ function Sizzle( selector, context, results, seed ) {
 	}
 
 	// All others
+	debugger
 	return select( selector.replace( rtrim, "$1" ), context, results, seed );
 }
 
@@ -2720,6 +2721,7 @@ select = Sizzle.select = function( selector, context, results, seed ) {
 		}
 	}
 
+	debugger
 	// Compile and execute a filtering function if one is not provided
 	// Provide `match` to avoid retokenization if we modified the selector above
 	( compiled || compile( selector, match ) )(

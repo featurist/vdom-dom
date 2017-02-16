@@ -1,8 +1,9 @@
+var WAttr = require('./wattr')
 var WText = require('./wtext')
 var convert = require('./convert')
 
 function WElement(vnode) {
-  this.tagName = vnode.tagName
+  this.tagName = this.nodeName = vnode.tagName.toUpperCase()
   this.vnode = vnode
 
   overwriteChildNodes(this, vnode.children)
@@ -52,12 +53,13 @@ function overwriteChildNodes(element, children) {
 WElement.prototype.nodeType = 1
 
 WElement.prototype.getElementsByTagName = function(tagName) {
+  var tagNameUpperCase = tagName.toUpperCase()
   var elements = []
   var queue = [].concat(this.childNodes)
   while (queue.length > 0) {
     var child = queue.shift()
     if (child.nodeType == 1 &&
-        child.tagName.toLowerCase() == tagName.toLowerCase()) {
+        (tagName == '*' || child.tagName == tagNameUpperCase)) {
       elements.push(child)
     }
     queue = queue.concat(child.childNodes || [])
@@ -69,11 +71,14 @@ WElement.prototype.getAttribute = function(name) {
   if (name == 'id') {
     return this.vnode.properties.id
   } else if (name == 'class') {
-    return this.vnode.properties.className ||
-           this.vnode.properties.attributes['class'] // html-to-vdom does this
+    return this.vnode.properties.className
   } else {
     return this.vnode.properties.attributes[name]
   }
+}
+
+WElement.prototype.getAttributeNode = function(name) {
+  return new WAttr(this.getAttribute(name))
 }
 
 WElement.prototype.setAttribute = function(name, value) {
