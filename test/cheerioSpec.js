@@ -29,3 +29,28 @@ describe('cheerio', function() {
     })
   })
 })
+
+describe('.attr(name)', function() {
+  const html = '<b id="x">Hello</b>'
+  let $
+
+  context('with CHEERIO', function() {
+    beforeEach(function() { $ = cheerio.load(html) })
+
+    globalIt('reads id attributes', function() {
+      for (var i = 0; i < 100; i++) {
+        assert.equal($('b').attr('id'), 'x')
+      }
+    })
+  })
+
+  context('with JEERIO', function() {
+    beforeEach(function() { $ = jeerio.load(html) })
+
+    globalIt('reads id attributes', function() {
+      for (var i = 0; i < 100; i++) {
+        assert.equal($('b').attr('id'), 'x')
+      }
+    })
+  })
+})
