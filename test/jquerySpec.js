@@ -208,4 +208,12 @@ describe('jQuery', function() {
       assert.equal(clone.html(), '<a><b>Banana</b></a>')
     })
   })
+
+  describe('.remove()', function () {
+    it('removes the set of matched elements', function ($) {
+      $('body').html('<p><a>A</a><b>B</b></p>')
+      $('b').remove()
+      assert.equal($('p').html(), '<a>A</a>')
+    })
+  })
 })

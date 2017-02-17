@@ -113,7 +113,8 @@ WElement.prototype.appendChild = function(child) {
 }
 
 WElement.prototype.removeChild = function(child) {
-  // TODO
+  this.vnode.children = this.vnode.children.filter(function(c) { return c != child.vnode })
+  this.childNodes = this.childNodes.filter(function(c) { return c != child })
 }
 
 WElement.prototype.cloneNode = function(deep) {
