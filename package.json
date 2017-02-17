@@ -9,6 +9,7 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "cheerio": "^0.22.0",
     "electron": "^1.4.15",
     "electron-mocha": "^3.3.0",
     "html-to-vdom": "^0.7.0",

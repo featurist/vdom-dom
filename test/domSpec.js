@@ -1,7 +1,6 @@
 const h = require('virtual-dom/h')
 const assert = require('assert')
 
-const vdomDom = require('..')
 const WWindow = require('../wwindow')
 const WDocument = require('../wdocument')
 const WElement = require('../welement')
