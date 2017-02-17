@@ -2,9 +2,12 @@ var WAttr = require('./wattr')
 var WText = require('./wtext')
 var convert = require('./convert')
 
-function WElement(vnode) {
+function WElement(vnode, parentWNode) {
+  if (vnode.type !== 'VirtualNode') throw new Error("vnode must be a VirtualNode")
+  if (typeof parentWNode === 'undefined') throw new Error("parentNode cannot be undefined")
   this.tagName = this.nodeName = vnode.tagName.toUpperCase()
   this.vnode = vnode
+  this.parentNode = parentWNode
 
   overwriteChildNodes(this, vnode.children)
 
@@ -33,7 +36,7 @@ function WElement(vnode) {
     get: function() {
       return this.vnode.children.map(function (child) {
         return convert.vdomToHtml(child) }).join('')
-      }.bind(this)
+    }.bind(this)
   })
 
   Object.defineProperty(this, 'lastChild', {
@@ -41,12 +44,23 @@ function WElement(vnode) {
       return this.childNodes[this.childNodes.length - 1]
     }.bind(this)
   })
+
+  Object.defineProperty(this, 'ownerDocument', {
+    get: function() {
+      var top = this
+      while (top.parentNode) {
+        top = top.parentNode
+      }
+      return top
+    }.bind(this)
+  })
 }
 
 function overwriteChildNodes(element, children) {
   element.vnode.children = children
   element.childNodes = children.map(function(child) {
-    return child.type === 'VirtualText' ? new WText(child) : new WElement(child)
+    return child.type === 'VirtualText' ?
+      new WText(child, element) : new WElement(child, element)
   })
 }
 
@@ -98,8 +112,29 @@ WElement.prototype.appendChild = function(child) {
   return child
 }
 
+WElement.prototype.removeChild = function(child) {
+  // TODO
+}
+
 WElement.prototype.cloneNode = function(deep) {
-  return new WElement(this.vnode)
+  var clone = deep ? deepClone : shallowClone
+  return new WElement(clone(this.vnode), this.parentNode)
+}
+
+function deepClone(object) {
+  var result, value, prop
+  result = Array.isArray(object) ? [] : {}
+  for (prop in object) {
+    value = object[prop]
+    result[prop] = (typeof value === "object") ? deepClone(value) : value
+  }
+  return result
+}
+
+function shallowClone(vnode) {
+  var cloned = deepClone(vnode)
+  cloned.children = []
+  return cloned
 }
 
 module.exports = WElement

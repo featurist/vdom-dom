@@ -1,4 +1,3 @@
-var WElement = require('./welement')
 var h = require('virtual-dom/h')
 
 function WDocumentImplementation(WDocument) {
@@ -6,7 +5,7 @@ function WDocumentImplementation(WDocument) {
 }
 
 WDocumentImplementation.prototype.createHTMLDocument = function() {
-  return new this.WDocument(new WElement(h('html', {}, [h('body', {}, [])])))
+  return new this.WDocument(h('html', {}, [h('body', {}, [])]))
 }
 
 module.exports = WDocumentImplementation

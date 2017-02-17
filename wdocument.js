@@ -3,11 +3,10 @@ var WDocumentImplementation = require('./wdocumentimplementation')
 var WElement = require('./welement')
 var h = require('virtual-dom/h')
 
-function WDocument(documentElement) {
-  this.documentElement = documentElement
-  documentElement.ownerDocument = this
+function WDocument(vhtml) {
+  this.documentElement = new WElement(vhtml, this)
   this.implementation = new WDocumentImplementation(WDocument)
-  this.body = documentElement.childNodes.find(function(child) {
+  this.body = this.documentElement.childNodes.find(function(child) {
     return child.tagName == 'BODY'
   })
 }
@@ -28,7 +27,11 @@ WDocument.prototype.createDocumentFragment = function() {
 }
 
 WDocument.prototype.createElement = function(tagName) {
-  return new WElement(h(tagName))
+  return new WElement(h(tagName), this)
+}
+
+WDocument.prototype.removeChild = function(child) {
+  // TODO
 }
 
 module.exports = WDocument

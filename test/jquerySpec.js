@@ -26,8 +26,8 @@ const it = function (description, callback, only) {
   }
 
   _it(description + ' VDOM', function () {
-    const html = h('html', {}, [h('body')])
-    const document = new WDocument(new WElement(html))
+    const vhtml = h('html', {}, [h('body')])
+    const document = new WDocument(vhtml)
     const location = new WLocation('http://example.com')
     const window = new WWindow(document, location)
     callback(jquery(window), document)
@@ -118,6 +118,12 @@ describe('jQuery', function() {
       $('body').html('<i>Howdy</i><i>Doody</i>')
       assert.equal($('i').length, 2)
     })
+
+    it('sets the ownerDocument of each node', function ($, document) {
+      $('body').html('<i>Howdy</i><i>Doody</i>')
+      assert.equal($('i')[0].ownerDocument, document)
+      assert.equal($('i')[1].ownerDocument, document)
+    })
   })
 
   describe('.html()', function () {
@@ -190,6 +196,16 @@ describe('jQuery', function() {
       assert.equal($('p').html(), '<a class="x y">Hi</a><b class="x y">Bye</b>')
       $('a, b').toggleClass('x y')
       assert.equal($('p').html(), '<a class="">Hi</a><b class="">Bye</b>')
+    })
+  })
+
+  describe('.clone()', function () {
+    it('creates a deep copy of the set of matched elements', function ($) {
+      $('body').html('<p><a><b>Banana</b></a></p>')
+      var clone = $('p').clone()
+      $('*').attr('x', 'y')
+      assert.equal($('p').html(), '<a x="y"><b x="y">Banana</b></a>')
+      assert.equal(clone.html(), '<a><b>Banana</b></a>')
     })
   })
 })

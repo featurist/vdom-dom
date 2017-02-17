@@ -20,8 +20,8 @@ const it = function (description, callback, only) {
   }
 
   _it(description + ' VDOM', function () {
-    const html = h('html', {}, [h('body')])
-    const document = new WDocument(new WElement(html))
+    const vhtml = h('html', {}, [h('body')])
+    const document = new WDocument(vhtml)
     const location = new WLocation('http://example.com')
     const window = new WWindow(document, location)
     callback(document)
@@ -31,11 +31,32 @@ it.only = function(description, callback) {
   return it(description, callback, true)
 }
 
-describe('document', function() {
-  describe('.getElementsByTagName("a")', function () {
+describe('DOM', function() {
+  describe('document.getElementsByTagName("a")', function () {
     it('finds one element', function (document) {
       document.body.innerHTML = '<a>OK</a>'
       assert.equal(document.getElementsByTagName('a').length, 1)
+    })
+  })
+
+  describe('document.body', function () {
+    it('has .ownerDocument equal to the document', function(document) {
+      assert.equal(document.body.ownerDocument, document)
+    })
+  })
+
+  describe('element.innerHTML', function () {
+    it('sets the ownerDocument of all assigned elements', function(document) {
+      document.body.innerHTML = '<a><b>OK</b></a>'
+      assert.equal(document.getElementsByTagName('a')[0].ownerDocument, document)
+      assert.equal(document.getElementsByTagName('b')[0].ownerDocument, document)
+    })
+  })
+
+  describe('element.cloneNode(false)', function () {
+    it('creates a shallow copy of the element', function(document) {
+      document.body.innerHTML = '<a><b>OK</b></a>'
+      assert.equal(document.getElementsByTagName('a')[0].cloneNode(false).innerHTML, '')
     })
   })
 })

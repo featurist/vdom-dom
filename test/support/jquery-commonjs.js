@@ -1555,6 +1555,7 @@ Sizzle.matchesSelector = function( elem, expr ) {
 
 Sizzle.contains = function( context, elem ) {
 	// Set document vars if needed
+	debugger
 	if ( ( context.ownerDocument || context ) !== document ) {
 		setDocument( context );
 	}
