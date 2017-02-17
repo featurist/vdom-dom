@@ -6,8 +6,13 @@ var h = require('virtual-dom/h')
 function WDocument(vhtml) {
   this.documentElement = new WElement(vhtml, this)
   this.implementation = new WDocumentImplementation(WDocument)
-  this.body = this.documentElement.childNodes.find(function(child) {
-    return child.tagName == 'BODY'
+
+  Object.defineProperty(this, 'body', {
+    get: function() {
+      return this.documentElement.childNodes.find(function(child) {
+        return child.tagName == 'BODY'
+      })
+    }.bind(this)
   })
 }
 
