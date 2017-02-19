@@ -1,17 +1,23 @@
+const h = require('virtual-dom/h')
 var WDocument = require('./wdocument')
 var WLocation = require('./wlocation')
 var WWindow = require('./wwindow')
 var convert = require('./convert')
 var jquery = require('./test/support/jquery-commonjs')
 
-var jeerio = {
-  load: function(html) {
-    var vdom = convert.htmlToVdom(html)
-    var document = new WDocument(vdom)
-    var location = new WLocation('http://example.com')
-    var window = new WWindow(document, location)
-    return jquery(window)
+function Jeerio() {
+  const vhtml = h('html', {}, [h('body')])
+  const document = new WDocument(vhtml)
+  var location = new WLocation('http://example.com')
+  var window = new WWindow(document, location)
+  this.$ = jquery(window)
+}
+
+Jeerio.prototype.load = function(html) {
+  var $ = this.$(html)
+  return function () {
+    return $.find.apply($, arguments)
   }
 }
 
-module.exports = jeerio
+module.exports = new Jeerio

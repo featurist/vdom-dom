@@ -4,8 +4,16 @@ var WElement = require('./welement')
 var h = require('virtual-dom/h')
 
 function WDocument(vhtml) {
-  this.documentElement = new WElement(vhtml, this)
+  this.childNodes = [].concat(new WElement(vhtml, this))
   this.implementation = new WDocumentImplementation(WDocument)
+
+  Object.defineProperty(this, 'documentElement', {
+    get: function() {
+      return this.childNodes.find(function(child) {
+        return child.tagName == 'HTML'
+      })
+    }.bind(this)
+  })
 
   Object.defineProperty(this, 'body', {
     get: function() {

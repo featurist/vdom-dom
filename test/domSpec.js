@@ -31,6 +31,13 @@ it.only = function(description, callback) {
 }
 
 describe('DOM', function() {
+  describe('document.createDocumentFragment()', function() {
+    it('creates a DocumentFragment node', function (document) {
+      const frag = document.createDocumentFragment()
+      assert.equal(frag.nodeType, 11)
+    })
+  })
+
   describe('document.getElementsByTagName("a")', function () {
     it('finds one element', function (document) {
       document.body.innerHTML = '<a>OK</a>'
@@ -49,6 +56,25 @@ describe('DOM', function() {
       document.body.innerHTML = '<a><b>OK</b></a>'
       assert.equal(document.getElementsByTagName('a')[0].ownerDocument, document)
       assert.equal(document.getElementsByTagName('b')[0].ownerDocument, document)
+    })
+  })
+
+  describe('element.nextSibling', function () {
+    it('gets the next sibling', function(document) {
+      document.body.innerHTML = '<p id="A">A</p><p id="B">B</p><p id="C">C</p>'
+      assert.equal(document.getElementsByTagName('p')[0].nextSibling.id, 'B')
+      assert.equal(document.getElementsByTagName('p')[1].nextSibling.id, 'C')
+      assert.equal(document.getElementsByTagName('p')[2].nextSibling, undefined)
+      assert.equal(document.documentElement.nextSibling, undefined)
+    })
+  })
+
+  describe('element.previousSibling', function () {
+    it('gets the previous sibling', function(document) {
+      document.body.innerHTML = '<p id="A">A</p><p id="B">B</p><p id="C">C</p>'
+      assert.equal(document.getElementsByTagName('p')[0].previousSibling, undefined)
+      assert.equal(document.getElementsByTagName('p')[1].previousSibling.id, 'A')
+      assert.equal(document.getElementsByTagName('p')[2].previousSibling.id, 'B')
     })
   })
 

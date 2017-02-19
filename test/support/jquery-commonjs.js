@@ -890,7 +890,6 @@ function Sizzle( selector, context, results, seed ) {
 	}
 
 	// All others
-	debugger
 	return select( selector.replace( rtrim, "$1" ), context, results, seed );
 }
 
@@ -1555,7 +1554,6 @@ Sizzle.matchesSelector = function( elem, expr ) {
 
 Sizzle.contains = function( context, elem ) {
 	// Set document vars if needed
-	debugger
 	if ( ( context.ownerDocument || context ) !== document ) {
 		setDocument( context );
 	}
@@ -2722,7 +2720,6 @@ select = Sizzle.select = function( selector, context, results, seed ) {
 		}
 	}
 
-	debugger
 	// Compile and execute a filtering function if one is not provided
 	// Provide `match` to avoid retokenization if we modified the selector above
 	( compiled || compile( selector, match ) )(

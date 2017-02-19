@@ -11,6 +11,10 @@ function WElement(vnode, parentWNode) {
 
   overwriteChildNodes(this, vnode.children)
 
+  this.toString = function() {
+    return convert.vdomToHtml(this.vnode)
+  }
+
   Object.defineProperty(this, 'id', {
     set: function(value) {
       this.setAttribute('id', value)
@@ -39,9 +43,27 @@ function WElement(vnode, parentWNode) {
     }.bind(this)
   })
 
+  Object.defineProperty(this, 'firstChild', {
+    get: function() {
+      return this.childNodes[0]
+    }.bind(this)
+  })
+
   Object.defineProperty(this, 'lastChild', {
     get: function() {
       return this.childNodes[this.childNodes.length - 1]
+    }.bind(this)
+  })
+
+  Object.defineProperty(this, 'nextSibling', {
+    get: function() {
+      return this.parentNode ? this.parentNode.childNodes[this.parentNode.childNodes.indexOf(this) + 1] : undefined
+    }.bind(this)
+  })
+
+  Object.defineProperty(this, 'previousSibling', {
+    get: function() {
+      return this.parentNode ? this.parentNode.childNodes[this.parentNode.childNodes.indexOf(this) - 1] : undefined
     }.bind(this)
   })
 

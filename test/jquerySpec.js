@@ -51,6 +51,13 @@ describe('jQuery', function() {
     })
   })
 
+  describe('$("i, a:has(.b)")', function () {
+    it('matches one element', function ($, document) {
+      document.body.innerHTML = '<a>OK <span class="b">Fine</span></b>'
+      assert.equal($('i, a:has(.b)').length, 1)
+    })
+  })
+
   describe('.attr(name, value)', function () {
     it('sets an attribute of one element', function ($) {
       $('body').html('<b>Hello</b>')
@@ -104,6 +111,13 @@ describe('jQuery', function() {
     it('gets the class of the first element', function ($) {
       $('body').html('<b class="x">First</b><b class="y">Second</b>')
       assert.equal($('b').attr('class'), 'x')
+    })
+  })
+
+  describe('.children()', function () {
+    it('finds child elements', function ($) {
+      $('body').html('<p><a>1</a><b>2</b></p>')
+      assert.equal($('p').children().length, 2)
     })
   })
 
