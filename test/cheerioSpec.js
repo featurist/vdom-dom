@@ -28,29 +28,41 @@ describe('cheerio', function() {
       assert.equal($('b').attr('id'), 'x')
     })
   })
-})
 
-describe('.attr(name)', function() {
-  const html = '<b id="x">Hello</b>'
-  let $
+  describe('.attr(name)', function() {
+    const html = '<b id="x">Hello <i class="y">Mate</i> <i>ok?</i></b>'
+    let $
 
-  context('with CHEERIO', function() {
-    beforeEach(function() { $ = cheerio.load(html) })
+    context('with CHEERIO', function() {
+      beforeEach(function() { $ = cheerio.load(html) })
 
-    globalIt('reads id attributes', function() {
-      for (var i = 0; i < 100; i++) {
-        assert.equal($('b').attr('id'), 'x')
-      }
+      globalIt('reads id attributes', function() {
+        for (var i = 0; i < 100; i++) {
+          assert.equal($('b').attr('id'), 'x')
+        }
+      })
+
+      globalIt('traverses with css', function() {
+        for (var i = 0; i < 200; i++) {
+          assert.equal($('b:not(.x' + i + '), x.foo, z' + i).attr('id'), 'x')
+        }
+      })
     })
-  })
 
-  context('with JEERIO', function() {
-    beforeEach(function() { $ = jeerio.load(html) })
+    context('with JEERIO', function() {
+      beforeEach(function() { $ = jeerio.load(html) })
 
-    globalIt('reads id attributes', function() {
-      for (var i = 0; i < 100; i++) {
-        assert.equal($('b').attr('id'), 'x')
-      }
+      globalIt('reads id attributes', function() {
+        for (var i = 0; i < 100; i++) {
+          assert.equal($('b').attr('id'), 'x')
+        }
+      })
+
+      globalIt('traverses with css', function() {
+        for (var i = 0; i < 200; i++) {
+          assert.equal($('b:not(.x' + i + '), x.foo, z' + i).attr('id'), 'x')
+        }
+      })
     })
   })
 })
