@@ -3,6 +3,9 @@ function WText(vnode, ownerDocument) {
   this.ownerDocument = ownerDocument
   this.textContent = vnode.text
   this.nodeValue = vnode.text
+  // cheerio
+  this.data = vnode.text
+  this.type = 'text'
 }
 
 WText.prototype.nodeType = 3

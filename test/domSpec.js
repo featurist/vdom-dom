@@ -84,4 +84,14 @@ describe('DOM', function() {
       assert.equal(document.getElementsByTagName('a')[0].cloneNode(false).innerHTML, '')
     })
   })
+
+  describe('element.contains(other)', function () {
+    it('is true when other is a descendant or self', function (document) {
+      document.body.innerHTML = '<div id="a"><div id="b"><div id="c">OK</div></div></div>'
+      assert.equal(document.getElementById('a').contains(document.getElementById('b')), true)
+      assert.equal(document.getElementById('a').contains(document.getElementById('c')), true)
+      assert.equal(document.getElementById('a').contains(document.getElementById('a')), true)
+      assert.equal(document.getElementById('c').contains(document.getElementById('a')), false)
+    })
+  })
 })

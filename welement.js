@@ -43,6 +43,7 @@ function WElement(vnode, parentWNode) {
     }.bind(this)
   })
 
+  // cheerio
   Object.defineProperty(this, 'data', {
     get: function() {
       return this.innerHTML
@@ -161,6 +162,22 @@ WElement.prototype.cloneNode = function(deep) {
   var clone = deep ? deepClone : shallowClone
   return new WElement(clone(this.vnode), this.parentNode)
 }
+
+WElement.prototype.contains = function(other) {
+  if (this == other) return true
+  const queue = [].concat(this.childNodes)
+  while (queue.length > 0) {
+    const current = queue.shift()
+    if (current == other) {
+      return true
+    } else if (current.childNodes) {
+      for (let i = 0; i < current.childNodes.length; ++i)
+        queue.push(current.childNodes[i])
+    }
+  }
+  return false
+}
+
 
 function deepClone(object) {
   var result, value, prop
