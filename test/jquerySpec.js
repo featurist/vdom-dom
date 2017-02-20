@@ -51,6 +51,18 @@ describe('jQuery', function() {
     })
   })
 
+  describe('$("#a")', function () {
+    it('matches one element', function ($, document) {
+      document.body.innerHTML = '<b id="a">OK</b>'
+      assert.equal($('#a').length, 1)
+    })
+
+    it('matches nothing', function ($, document) {
+      document.body.innerHTML = '<b id="a">OK</b>'
+      assert.equal($('#z').length, 0)
+    })
+  })
+
   describe('$("i, a:has(.b)")', function () {
     it('matches one element', function ($, document) {
       document.body.innerHTML = '<a>OK <span class="b">Fine</span></b>'
@@ -118,6 +130,13 @@ describe('jQuery', function() {
     it('finds child elements', function ($) {
       $('body').html('<p><a>1</a><b>2</b></p>')
       assert.equal($('p').children().length, 2)
+    })
+  })
+
+  describe('.eq(index)', function () {
+    it('finds the element at the specified index', function ($) {
+      $('body').html('<a>1</a><b>2</b>')
+      assert.equal($('a, b').eq(0)[0].tagName, 'A')
     })
   })
 
@@ -227,6 +246,15 @@ describe('jQuery', function() {
       $('body').html('<p><a>A</a><b>B</b></p>')
       $('b').remove()
       assert.equal($('p').html(), '<a>A</a>')
+    })
+  })
+
+  describe('.text()', function () {
+    it('gets the text of the matched elements', function ($) {
+      $('body').html('<p><a>A</a><b>B</b></p>')
+      var a = $('p a')
+      debugger
+      assert.equal(a.text(), 'A')
     })
   })
 })

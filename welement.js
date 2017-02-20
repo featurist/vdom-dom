@@ -43,6 +43,18 @@ function WElement(vnode, parentWNode) {
     }.bind(this)
   })
 
+  Object.defineProperty(this, 'data', {
+    get: function() {
+      return this.innerHTML
+    }.bind(this)
+  })
+
+  Object.defineProperty(this, 'outerHTML', {
+    get: function() {
+      return convert.vdomToHtml(this.vnode)
+    }.bind(this)
+  })
+
   Object.defineProperty(this, 'firstChild', {
     get: function() {
       return this.childNodes[0]
@@ -74,6 +86,12 @@ function WElement(vnode, parentWNode) {
         top = top.parentNode
       }
       return top
+    }.bind(this)
+  })
+
+  Object.defineProperty(this, 'attribs', {
+    get: function() {
+      return Object.assign(this.vnode.properties, this.vnode.properties.attributes || {}, { 'class': this.vnode.properties.className })
     }.bind(this)
   })
 }

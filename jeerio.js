@@ -15,7 +15,15 @@ function Jeerio() {
 
 Jeerio.prototype.load = function(html) {
   var $ = this.$(html)
+  var jQuery = this.$
   return function () {
+    if (
+      (typeof arguments[0] == 'string' && arguments[0].indexOf('<') == 0)
+      ||
+      arguments.length == 2
+    ) {
+      return jQuery.apply(null, arguments)
+    }
     return $.find.apply($, arguments)
   }
 }

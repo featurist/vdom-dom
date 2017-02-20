@@ -26,6 +26,20 @@ function WDocument(vhtml) {
 
 WDocument.prototype.nodeType = 9
 
+WDocument.prototype.getElementById = function(id) {
+  const queue = [].concat(this.childNodes)
+  while (queue.length > 0) {
+    const current = queue.shift()
+    if (current.id == id) {
+      return current
+    } else if (current.childNodes) {
+      for (let i = 0; i < current.childNodes.length; ++i)
+        queue.push(current.childNodes[i])
+    }
+  }
+  return null
+}
+
 WDocument.prototype.getElementsByTagName = function(tagName) {
   var elements = []
   if (tagName == '*' || this.documentElement.tagName.toLowerCase() == tagName.toLowerCase()) {
@@ -45,6 +59,10 @@ WDocument.prototype.createElement = function(tagName) {
 
 WDocument.prototype.removeChild = function(child) {
   // TODO
+}
+
+WDocument.prototype.write = function(html) {
+  this.innerHTML = html
 }
 
 module.exports = WDocument
