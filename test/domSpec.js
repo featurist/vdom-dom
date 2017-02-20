@@ -51,11 +51,16 @@ describe('DOM', function() {
     })
   })
 
-  describe('element.innerHTML', function () {
+  describe('element.innerHTML = ...', function () {
     it('sets the ownerDocument of all assigned elements', function(document) {
       document.body.innerHTML = '<a><b>OK</b></a>'
       assert.equal(document.getElementsByTagName('a')[0].ownerDocument, document)
       assert.equal(document.getElementsByTagName('b')[0].ownerDocument, document)
+    })
+
+    it.only('adds comment nodes', function(document) {
+      document.body.innerHTML = '<!-- howdy -->'
+      assert.equal(document.body.childNodes[0].nodeType, 8)
     })
   })
 

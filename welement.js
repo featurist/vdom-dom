@@ -49,6 +49,12 @@ function WElement(vnode, parentWNode) {
       return this.innerHTML
     }.bind(this)
   })
+  // cheerio
+  Object.defineProperty(this, 'name', {
+    get: function() {
+      return this.tagName.toLowerCase()
+    }.bind(this)
+  })
 
   Object.defineProperty(this, 'outerHTML', {
     get: function() {
