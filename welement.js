@@ -11,98 +11,94 @@ function WElement(vnode, parentWNode) {
   this.parentNode = parentWNode
 
   overwriteChildNodes(this, vnode.children)
+}
 
-  this.toString = function() {
+Object.defineProperty(WElement.prototype, 'id', {
+  set: function(value) {
+    this.setAttribute('id', value)
+  },
+  get: function() {
+    return this.getAttribute('id')
+  }
+})
+
+Object.defineProperty(WElement.prototype, 'className', {
+  set: function(value) {
+    this.vnode.properties.className = value
+  },
+  get: function() {
+    return this.vnode.properties.className
+  }
+})
+
+Object.defineProperty(WElement.prototype, 'innerHTML', {
+  set: function(html) {
+    overwriteChildNodes(this, [].concat(convert.htmlToVdom(html)))
+  },
+  get: function() {
+    return this.vnode.children.map(function (child) {
+      return convert.vdomToHtml(child) }).join('')
+  }
+})
+
+// cheerio
+Object.defineProperty(WElement.prototype, 'data', {
+  get: function() {
+    return this.innerHTML
+  }
+})
+// cheerio
+Object.defineProperty(WElement.prototype, 'name', {
+  get: function() {
+    return this.tagName.toLowerCase()
+  }
+})
+
+Object.defineProperty(WElement.prototype, 'outerHTML', {
+  get: function() {
     return convert.vdomToHtml(this.vnode)
   }
+})
 
-  Object.defineProperty(this, 'id', {
-    set: function(value) {
-      this.setAttribute('id', value)
-    }.bind(this),
-    get: function() {
-      return this.getAttribute('id')
+Object.defineProperty(WElement.prototype, 'firstChild', {
+  get: function() {
+    return this.childNodes[0]
+  }
+})
+
+Object.defineProperty(WElement.prototype, 'lastChild', {
+  get: function() {
+    return this.childNodes[this.childNodes.length - 1]
+  }
+})
+
+Object.defineProperty(WElement.prototype, 'nextSibling', {
+  get: function() {
+    return this.parentNode ? this.parentNode.childNodes[this.parentNode.childNodes.indexOf(this) + 1] : undefined
+  }
+})
+
+Object.defineProperty(WElement.prototype, 'previousSibling', {
+  get: function() {
+    return this.parentNode ? this.parentNode.childNodes[this.parentNode.childNodes.indexOf(this) - 1] : undefined
+  }
+})
+
+Object.defineProperty(WElement.prototype, 'ownerDocument', {
+  get: function() {
+    var top = this
+    while (top.parentNode) {
+      top = top.parentNode
     }
-  })
+    return top
+  }
+})
 
-  Object.defineProperty(this, 'className', {
-    set: function(value) {
-      this.vnode.properties.className = value
-    }.bind(this),
-    get: function() {
-      return this.vnode.properties.className
-    }
-  })
-
-  Object.defineProperty(this, 'innerHTML', {
-    set: function(html) {
-      overwriteChildNodes(this, [].concat(convert.htmlToVdom(html)))
-    }.bind(this),
-    get: function() {
-      return this.vnode.children.map(function (child) {
-        return convert.vdomToHtml(child) }).join('')
-    }.bind(this)
-  })
-
-  // cheerio
-  Object.defineProperty(this, 'data', {
-    get: function() {
-      return this.innerHTML
-    }.bind(this)
-  })
-  // cheerio
-  Object.defineProperty(this, 'name', {
-    get: function() {
-      return this.tagName.toLowerCase()
-    }.bind(this)
-  })
-
-  Object.defineProperty(this, 'outerHTML', {
-    get: function() {
-      return convert.vdomToHtml(this.vnode)
-    }.bind(this)
-  })
-
-  Object.defineProperty(this, 'firstChild', {
-    get: function() {
-      return this.childNodes[0]
-    }.bind(this)
-  })
-
-  Object.defineProperty(this, 'lastChild', {
-    get: function() {
-      return this.childNodes[this.childNodes.length - 1]
-    }.bind(this)
-  })
-
-  Object.defineProperty(this, 'nextSibling', {
-    get: function() {
-      return this.parentNode ? this.parentNode.childNodes[this.parentNode.childNodes.indexOf(this) + 1] : undefined
-    }.bind(this)
-  })
-
-  Object.defineProperty(this, 'previousSibling', {
-    get: function() {
-      return this.parentNode ? this.parentNode.childNodes[this.parentNode.childNodes.indexOf(this) - 1] : undefined
-    }.bind(this)
-  })
-
-  Object.defineProperty(this, 'ownerDocument', {
-    get: function() {
-      var top = this
-      while (top.parentNode) {
-        top = top.parentNode
-      }
-      return top
-    }.bind(this)
-  })
-
-  Object.defineProperty(this, 'attribs', {
-    get: function() {
-      return Object.assign(this.vnode.properties, this.vnode.properties.attributes || {}, { 'class': this.vnode.properties.className })
-    }.bind(this)
-  })
-}
+Object.defineProperty(WElement.prototype, 'attribs', {
+  get: function() {
+    return Object.assign(this.vnode.properties, this.vnode.properties.attributes || {}, { 'class': this.vnode.properties.className })
+  }
+})
 
 function overwriteChildNodes(element, children) {
   element.vnode.children = children
