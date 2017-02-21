@@ -19,13 +19,14 @@ const it = function (description, callback, only) {
   const _it = only ? globalIt.only : globalIt
 
   if (typeof(window) !== 'undefined') {
-    _it(description, function () {
+    _it(description + ' HDOM', function () {
+      document.write('<html><head></head><body></body></html>')
       callback(jquery(window), document)
     })
   }
 
   _it(description + ' VDOM', function () {
-    const vhtml = h('html', {}, [h('body')])
+    const vhtml = h('html', {}, [h('head'), h('body')])
     const document = new WDocument(vhtml)
     const location = new WLocation('http://example.com')
     const window = new WWindow(document, location)
@@ -253,8 +254,17 @@ describe('jQuery', function() {
     it('gets the text of the matched elements', function ($) {
       $('body').html('<p><a>A</a><b>B</b></p>')
       var a = $('p a')
-      debugger
       assert.equal(a.text(), 'A')
+    })
+  })
+
+  describe('.index()', function () {
+    it('gets the index of the element among its siblings', function ($) {
+      $('body').html('<p><a>A</a><b>B</b></p>')
+      assert.equal($('p a').index(), 0)
+      assert.equal($('p b').index(), 1)
+      assert.equal($('html').index(), 0)
+      assert.equal($('body').index(), 1)
     })
   })
 })

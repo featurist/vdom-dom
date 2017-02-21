@@ -6,7 +6,7 @@ var convert = require('./convert')
 var jquery = require('./test/support/jquery-commonjs')
 
 function Jeerio() {
-  const vhtml = h('html', {}, [h('body')])
+  const vhtml = h('html', {}, [h('head'), h('body')])
   const document = new WDocument(vhtml)
   var location = new WLocation('http://example.com')
   var window = new WWindow(document, location)
