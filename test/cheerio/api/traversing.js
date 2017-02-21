@@ -154,7 +154,7 @@ describe('$(...)', function() {
       expect($('p').contents().first()[0].type).to.equal('text');
     });
 
-    it.only('() : should include comment nodes', function() {
+    it('() : should include comment nodes', function() {
       var contents = $('p').contents()
       debugger
       expect($('p').contents().last()[0].type).to.equal('comment');

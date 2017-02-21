@@ -58,14 +58,15 @@ describe('DOM', function() {
       assert.equal(document.getElementsByTagName('b')[0].ownerDocument, document)
     })
 
-    it.only('adds comment nodes', function(document) {
+    it('adds comment nodes', function (document) {
       document.body.innerHTML = '<!-- howdy -->'
       assert.equal(document.body.childNodes[0].nodeType, 8)
+      assert.equal(document.body.childNodes[0].nodeValue, ' howdy ')
     })
   })
 
   describe('element.nextSibling', function () {
-    it('gets the next sibling', function(document) {
+    it('gets the next sibling', function (document) {
       document.body.innerHTML = '<p id="A">A</p><p id="B">B</p><p id="C">C</p>'
       assert.equal(document.getElementsByTagName('p')[0].nextSibling.id, 'B')
       assert.equal(document.getElementsByTagName('p')[1].nextSibling.id, 'C')

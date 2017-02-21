@@ -1,5 +1,6 @@
 var WAttr = require('./wattr')
 var WText = require('./wtext')
+var WComment = require('./wcomment')
 var convert = require('./convert')
 
 function WElement(vnode, parentWNode) {
@@ -106,6 +107,13 @@ function WElement(vnode, parentWNode) {
 function overwriteChildNodes(element, children) {
   element.vnode.children = children
   element.childNodes = children.map(function(child) {
+    if (child.extended) {
+      if (child.extended.type == 'comment') {
+        return new WComment(child, element)
+      } else {
+        throw new Error("Unsupported node " + child.extended.type)
+      }
+    }
     return child.type === 'VirtualText' ?
       new WText(child, element) : new WElement(child, element)
   })
