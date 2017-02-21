@@ -56,6 +56,7 @@ describe('DOM', function() {
       document.body.innerHTML = '<a><b>OK</b></a>'
       assert.equal(document.getElementsByTagName('a')[0].ownerDocument, document)
       assert.equal(document.getElementsByTagName('b')[0].ownerDocument, document)
+      assert.equal(document.getElementsByTagName('b')[0].childNodes[0].ownerDocument, document)
     })
 
     it('adds comment nodes', function (document) {
