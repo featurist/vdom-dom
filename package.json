@@ -2,7 +2,7 @@
   "name": "vdom-dom",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "jeerio.js",
   "scripts": {
     "test": "./mocha && ./electron"
   },
