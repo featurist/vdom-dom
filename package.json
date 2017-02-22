@@ -14,7 +14,7 @@
     "electron-mocha": "^3.3.0",
     "expect.js": "^0.3.1",
     "jquery": "^3.1.1",
-    "mocha": "^3.2.0",
+    "mocha": "^3.2.0"
   },
   "dependencies": {
     "html-to-vdom": "git+https://github.com/joshski/html-to-vdom.git#expose-comments",
