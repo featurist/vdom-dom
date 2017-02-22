@@ -36,6 +36,17 @@ describe('DOM', function() {
       const frag = document.createDocumentFragment()
       assert.equal(frag.nodeType, 11)
     })
+
+    it('can be appended to an element', function (document) {
+      const element = document.createElement('p')
+      const frag = document.createDocumentFragment()
+      const child = document.createElement('i')
+      child.textContent = 'yes'
+      frag.appendChild(child)
+      element.appendChild(frag)
+      assert.equal(element.outerHTML, '<p><i>yes</i></p>')
+      assert.equal(child.parentNode.tagName, 'P')
+    })
   })
 
   describe('document.getElementsByTagName("a")', function () {
@@ -63,6 +74,31 @@ describe('DOM', function() {
       document.body.innerHTML = '<!-- howdy -->'
       assert.equal(document.body.childNodes[0].nodeType, 8)
       assert.equal(document.body.childNodes[0].nodeValue, ' howdy ')
+    })
+  })
+
+  describe('element.textContent = ...', function () {
+    it('overwrites childNodes with a text node', function (document) {
+      document.body.innerHTML = '<b>1</b><b>2</b>'
+      document.body.textContent = 'yeah'
+      assert.equal(document.body.childNodes.length, 1)
+    })
+
+    it('orphans existing childNodes', function (document) {
+      document.body.innerHTML = '<b>1</b>'
+      const b = document.getElementsByTagName('b')[0]
+      document.body.textContent = ''
+      assert.equal(b.parentNode, null)
+    })
+  })
+
+  describe('documentFragment.textContent = ...', function () {
+    it('orphans existing childNodes', function (document) {
+      const frag = document.createDocumentFragment()
+      const b = document.createElement('b')
+      frag.appendChild(b)
+      frag.textContent = ''
+      assert.equal(b.parentNode, null)
     })
   })
 

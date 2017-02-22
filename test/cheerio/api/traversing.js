@@ -142,7 +142,6 @@ describe('$(...)', function() {
   describe('.contents', function() {
 
     beforeEach(function() {
-      debugger
       $ = cheerio.load(text);
     });
 
@@ -156,7 +155,6 @@ describe('$(...)', function() {
 
     it('() : should include comment nodes', function() {
       var contents = $('p').contents()
-      debugger
       expect($('p').contents().last()[0].type).to.equal('comment');
     });
 

@@ -71,6 +71,12 @@ describe('jQuery', function() {
     })
   })
 
+  describe('$("<b id="x">OK</b>")', function () {
+    it('matches one element', function ($, document) {
+      assert.equal($('<b id="x">OK</b>').length, 1)
+    })
+  })
+
   describe('.attr(name, value)', function () {
     it('sets an attribute of one element', function ($) {
       $('body').html('<b>Hello</b>')

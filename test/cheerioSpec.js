@@ -24,7 +24,9 @@ it.only = function(description, callback) {
 describe('cheerio', function() {
   describe('.attr(name)', function() {
     it('reads id attributes', function(cheerio) {
+
       const $ = cheerio.load('<b id="x">Hello</b>')
+
       assert.equal($('b').attr('id'), 'x')
     })
   })

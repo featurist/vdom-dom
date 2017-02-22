@@ -1,5 +1,6 @@
 var WAttr = require('./wattr')
 var WText = require('./wtext')
+var VText = require('virtual-dom/vnode/vtext')
 var WComment = require('./wcomment')
 var convert = require('./convert')
 
@@ -38,6 +39,12 @@ Object.defineProperty(WElement.prototype, 'innerHTML', {
   get: function() {
     return this.vnode.children.map(function (child) {
       return convert.vdomToHtml(child) }).join('')
+  }
+})
+
+Object.defineProperty(WElement.prototype, 'textContent', {
+  set: function(text) {
+    overwriteChildNodes(this, [].concat(new VText(text)))
   }
 })
 
@@ -101,6 +108,11 @@ Object.defineProperty(WElement.prototype, 'attribs', {
 })
 
 function overwriteChildNodes(element, children) {
+  if (element.childNodes) {
+    element.childNodes.forEach(function(child) {
+      child.parentNode = null
+    })
+  }
   element.vnode.children = children
   element.childNodes = children.map(function(child) {
     if (child.extended) {
@@ -158,8 +170,18 @@ WElement.prototype.setAttribute = function(name, value) {
 }
 
 WElement.prototype.appendChild = function(child) {
-  this.vnode.children.push(child.vnode)
-  this.childNodes.push(child)
+  if (child.nodeType == 11) {
+    // document fragment
+    var self = this
+    child.childNodes.forEach(function(fragChild) {
+      fragChild.parentNode = self
+      self.appendChild(fragChild)
+    })
+  } else {
+    // element
+    this.vnode.children.push(child.vnode)
+    this.childNodes.push(child)
+  }
   return child
 }
 
