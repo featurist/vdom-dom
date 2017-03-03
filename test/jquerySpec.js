@@ -138,6 +138,23 @@ describe('jQuery', function() {
       })
     })
 
+    describe('a', function () {
+      [
+        {name: 'href', value: '/'},
+        {name: 'download', value: 'name'},
+        {name: 'hreflang', value: 'en'},
+        {name: 'referrerpolicy', value: 'origin'},
+        {name: 'rel', value: 'alternate'},
+        {name: 'target', value: '_blank'},
+        {name: 'type', value: 'text/html'},
+      ].forEach(function(attribute) {
+        it('gets the '+attribute.name+' of an a', function ($) {
+          $('body').html('<a '+attribute.name+'="'+attribute.value+'">OK</a>')
+          assert.equal($('a').attr(attribute.name), attribute.value)
+        })
+      })
+    })
+
     it('gets the id of the first element', function ($) {
       $('body').html('<b id="x">First</b><b id="y">Second</b>')
       assert.equal($('b').attr('id'), 'x')
