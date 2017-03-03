@@ -122,6 +122,22 @@ describe('jQuery', function() {
       assert.equal($('b').attr('id'), 'x')
     })
 
+    describe('img', function () {
+      [
+        {name: 'src', value: '/test.jpg'},
+        {name: 'alt', value: 'description'},
+        {name: 'crossorigin', value: 'anonymous'},
+        {name: 'longdesc', value: 'otherId'},
+        {name: 'width', value: '200'},
+        {name: 'height', value: '100'},
+      ].forEach(function(attribute) {
+        it('gets the '+attribute.name+' of an img', function ($) {
+          $('body').html('<img '+attribute.name+'="'+attribute.value+'" />')
+          assert.equal($('img').attr(attribute.name), attribute.value)
+        })
+      })
+    })
+
     it('gets the id of the first element', function ($) {
       $('body').html('<b id="x">First</b><b id="y">Second</b>')
       assert.equal($('b').attr('id'), 'x')

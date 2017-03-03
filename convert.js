@@ -14,17 +14,21 @@ var convert = {
     return vdomToHtml(vdom)
   }
 }
+function convertAttributeToProperty(vdom, name, newName) {
+  if (vdom.properties &&
+      vdom.properties.attributes &&
+      typeof vdom.properties.attributes[name] == 'string') {
+    vdom.properties[newName] = vdom.properties.attributes[name]
+    delete vdom.properties.attributes[name]
+  }
+}
 
 function normaliseVdom(vdom) {
   if (typeof vdom.map == 'function') {
     return vdom.map(normaliseVdom)
   }
-  if (vdom.properties &&
-      vdom.properties.attributes &&
-      typeof vdom.properties.attributes['class'] == 'string') {
-    vdom.properties.className = vdom.properties.attributes['class']
-    delete vdom.properties.attributes['class']
-  }
+  convertAttributeToProperty(vdom, 'class', 'className')
+
   if (vdom.children) {
     for (var i = 0; i < vdom.children.length; ++i) {
       normaliseVdom(vdom.children[i])

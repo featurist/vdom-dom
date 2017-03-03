@@ -149,6 +149,12 @@ WElement.prototype.getAttribute = function(name) {
     return this.vnode.properties.id
   } else if (name == 'class') {
     return this.vnode.properties.className
+  } else if (name == 'crossorigin') {
+    return this.vnode.properties.crossOrigin
+  } else if (name == 'alt') {
+    return this.vnode.properties.alt
+  } else if (name == 'src') {
+    return this.vnode.properties.src
   } else {
     return this.vnode.properties.attributes[name]
   }
