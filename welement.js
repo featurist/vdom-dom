@@ -149,6 +149,24 @@ WElement.prototype.getAttribute = function(name) {
     return this.vnode.properties.id
   } else if (name == 'class') {
     return this.vnode.properties.className
+  } else if (name == 'crossorigin') {
+    return this.vnode.properties.crossOrigin
+  } else if (name == 'alt') {
+    return this.vnode.properties.alt
+  } else if (name == 'src') {
+    return this.vnode.properties.src
+  } else if (name == 'href') {
+    return this.vnode.properties.href
+  } else if (name == 'download') {
+    return this.vnode.properties.download
+  } else if (name == 'hreflang') {
+    return this.vnode.properties.hrefLang
+  } else if (name == 'rel') {
+    return this.vnode.properties.rel
+  } else if (name == 'target') {
+    return this.vnode.properties.target
+  } else if (name == 'type') {
+    return this.vnode.properties.type
   } else {
     return this.vnode.properties.attributes[name]
   }
