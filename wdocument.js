@@ -15,6 +15,14 @@ function WDocument(vhtml) {
     }.bind(this)
   })
 
+  Object.defineProperty(this, 'head', {
+    get: function() {
+      return this.documentElement.childNodes.find(function(child) {
+        return child.tagName == 'HEAD'
+      })
+    }.bind(this)
+  })
+
   Object.defineProperty(this, 'body', {
     get: function() {
       return this.documentElement.childNodes.find(function(child) {
