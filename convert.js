@@ -3,6 +3,16 @@ var VText = require('virtual-dom/vnode/vtext')
 var vdomToHtml = require('vdom-to-html')
 var htmlToVdom = require('html-to-vdom')({ VNode: VNode, VText: VText })
 
+function vdomToText(vdom) {
+  if (vdom instanceof VText) {
+    return vdom.text;
+  } else {
+    return vdom.children.map(function (child) {
+      return vdomToText(child);
+    }).join('')
+  }
+}
+
 var convert = {
   htmlToVdom: function(html) {
     var vdom = htmlToVdom(html)
@@ -12,6 +22,10 @@ var convert = {
 
   vdomToHtml: function(vdom) {
     return vdomToHtml(vdom)
+  },
+
+  vdomToText: function (vdom) {
+    return vdomToText(vdom)
   }
 }
 function convertAttributeToProperty(vdom, name, newName) {

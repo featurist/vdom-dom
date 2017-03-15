@@ -38,6 +38,12 @@ it.only = function(description, callback) {
 }
 
 describe('jQuery', function() {
+  describe('script', function () {
+    it('gets script', function ($, document) {
+      document.head.innerHTML = '<script type="application/ld+json">{"hello":"world"}</script>'
+      assert.equal($('script[type="application/ld+json"]').text(), '{"hello":"world"}')
+    })
+  })
   describe('$("a")', function () {
     it('matches one element', function ($, document) {
       document.body.innerHTML = '<a>OK</a>'

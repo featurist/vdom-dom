@@ -92,6 +92,13 @@ describe('DOM', function() {
     })
   })
 
+  describe('element.textContent', function () {
+    it('gets the textContent of an element and its children', function (document) {
+      document.body.innerHTML = '<div>hello <span>world<b>!</b></span>'
+      assert.equal(document.body.textContent, 'hello world!')
+    })
+  })
+
   describe('documentFragment.textContent = ...', function () {
     it('orphans existing childNodes', function (document) {
       const frag = document.createDocumentFragment()

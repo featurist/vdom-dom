@@ -43,6 +43,9 @@ Object.defineProperty(WElement.prototype, 'innerHTML', {
 })
 
 Object.defineProperty(WElement.prototype, 'textContent', {
+  get: function() {
+    return convert.vdomToText(this.vnode);
+  },
   set: function(text) {
     overwriteChildNodes(this, [].concat(new VText(text)))
   }
