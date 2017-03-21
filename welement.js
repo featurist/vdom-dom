@@ -110,6 +110,20 @@ Object.defineProperty(WElement.prototype, 'attribs', {
   }
 })
 
+Object.defineProperty(WElement.prototype, 'options', {
+  get: function() {
+    if (this.tagName === 'SELECT') {
+      var options = this.childNodes.slice(0)
+      var selectedIndex = options.indexOf(options.find(function(option) {
+        return option.vnode.properties.selected
+      }))
+
+      options.selectedIndex = selectedIndex !== -1 ? selectedIndex : 0
+      return options
+    }
+  }
+})
+
 function overwriteChildNodes(element, children) {
   if (element.childNodes) {
     element.childNodes.forEach(function(child) {
