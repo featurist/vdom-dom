@@ -184,6 +184,15 @@ WElement.prototype.getAttribute = function(name) {
     return this.vnode.properties.target
   } else if (name == 'type') {
     return this.vnode.properties.type
+  } else if (name == 'style') {
+    var style = this.vnode.properties.style
+    if (style) {
+      return Object.keys(style).map(key => {
+        return key + ':'+style[key]
+      }).join(';')
+    } else {
+      return undefined
+    }
   } else {
     return this.vnode.properties.attributes[name]
   }

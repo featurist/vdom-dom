@@ -145,6 +145,12 @@ describe('DOM', function() {
     })
   })
 
+  describe('element.getAttribute', function () {
+    it('gets the style of an element', function (document) {
+      document.body.innerHTML = '<div id="message" style="color:bold">text</div>'
+      assert.equal(document.getElementById('message').getAttribute('style'), 'color:bold')
+    })
+  })
   describe('select.options', function () {
     it('has option elements', function (document) {
       document.body.innerHTML = '<select id="select"><option id="one">one</option><option id="two" selected>two</option></select>'

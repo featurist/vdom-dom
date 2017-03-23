@@ -312,4 +312,10 @@ describe('jQuery', function() {
       assert.equal($('body').index(), 1)
     })
   })
+  describe('.find()', function () {
+    it('by [style] ', function ($) {
+      $('body').html('<p><a style="color:red">link</a><b>B</b></p>')
+      assert.equal($('[style]').text(), 'link')
+    })
+  })
 })
