@@ -144,4 +144,18 @@ describe('DOM', function() {
       assert.equal(document.getElementById('c').contains(document.getElementById('a')), false)
     })
   })
+
+  describe('select.options', function () {
+    it('has option elements', function (document) {
+      document.body.innerHTML = '<select id="select"><option id="one">one</option><option id="two" selected>two</option></select>'
+      var options = document.getElementById('select').options
+      assert.equal(options.indexOf(document.getElementById('one')), 0)
+      assert.equal(options.indexOf(document.getElementById('two')), 1)
+      assert.equal(options.selectedIndex, 1)
+    })
+    it('div.options is undefined', function (document) {
+      document.body.innerHTML = '<div id="select"></div>'
+      assert.equal(document.getElementById('select').options, undefined)
+    })
+  })
 })
