@@ -3,6 +3,8 @@ var WText = require('./wtext')
 var VText = require('virtual-dom/vnode/vtext')
 var WComment = require('./wcomment')
 var convert = require('./convert')
+var toStyleString = require('to-style').string
+var toStyleObject = require('to-style').object
 
 function WElement(vnode, parentWNode) {
   if (vnode.type !== 'VirtualNode') throw new Error("vnode must be a VirtualNode")
@@ -184,6 +186,10 @@ WElement.prototype.getAttribute = function(name) {
     return this.vnode.properties.target
   } else if (name == 'type') {
     return this.vnode.properties.type
+  } else if (name == 'style') {
+    if (this.vnode.properties.style) {
+      return toStyleString(this.vnode.properties.style)
+    }
   } else {
     return this.vnode.properties.attributes[name]
   }
@@ -193,11 +199,21 @@ WElement.prototype.getAttributeNode = function(name) {
   return new WAttr(this.getAttribute(name))
 }
 
+WElement.prototype.removeAttribute = function(name) {
+  if (name == 'style') {
+    delete this.vnode.properties.style
+  } else {
+    delete this.vnode.properties.attributes[name]
+  }
+}
+
 WElement.prototype.setAttribute = function(name, value) {
   if (name == 'id') {
     this.vnode.properties.id = value
   } else if (name == 'class') {
     this.vnode.properties.className = value
+  } else if (name == 'style') {
+    this.vnode.properties.style = toStyleObject(value)
   } else {
     this.vnode.properties.attributes = this.vnode.properties.attributes || {}
     this.vnode.properties.attributes[name] = value

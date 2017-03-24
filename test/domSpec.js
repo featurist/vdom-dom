@@ -145,6 +145,28 @@ describe('DOM', function() {
     })
   })
 
+  describe('element.getAttribute', function () {
+    it('gets the style of an element', function (document) {
+      document.body.innerHTML = '<div id="message" style="color:bold">text</div>'
+      assert.equal(document.getElementById('message').getAttribute('style'), 'color: bold')
+    })
+  })
+
+  describe('element.setAttribute', function () {
+    it('sets the style of an element', function (document) {
+      document.body.innerHTML = '<div id="message">text</div>'
+      document.getElementById('message').setAttribute('style', 'color: bold')
+      assert.equal(document.getElementById('message').getAttribute('style'), 'color: bold')
+    })
+  })
+
+  describe('element.removeAttribute', function () {
+    it('removes the style of an element', function (document) {
+      document.body.innerHTML = '<div id="message" style="color:bold">text</div>'
+      document.getElementById('message').removeAttribute('style')
+      assert.equal(document.getElementById('message').getAttribute('style'), undefined)
+    })
+  })
   describe('select.options', function () {
     it('has option elements', function (document) {
       document.body.innerHTML = '<select id="select"><option id="one">one</option><option id="two" selected>two</option></select>'
