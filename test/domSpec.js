@@ -146,6 +146,13 @@ describe('DOM', function() {
   })
 
   describe('element.getAttribute', function () {
+    it('gets an attribute when attributes is null', function (document) {
+      var el = document.createElement('div')
+      el.id = 'message'
+      document.body.appendChild(el)
+      assert.equal(document.getElementById('message').getAttribute('notRealAttribute'), null)
+    })
+
     it('gets the style of an element', function (document) {
       document.body.innerHTML = '<div id="message" style="color:bold">text</div>'
       assert.equal(document.getElementById('message').getAttribute('style'), 'color: bold')

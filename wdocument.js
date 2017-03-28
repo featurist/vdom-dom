@@ -62,7 +62,7 @@ WDocument.prototype.createDocumentFragment = function() {
 }
 
 WDocument.prototype.createElement = function(tagName) {
-  return new WElement(h(tagName), this)
+  return new WElement(h(tagName, {attributes: {}}), this)
 }
 
 WDocument.prototype.removeChild = function(child) {
